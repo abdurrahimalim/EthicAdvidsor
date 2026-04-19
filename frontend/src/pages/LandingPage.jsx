@@ -125,7 +125,42 @@ export default function LandingPage() {
       </section>
 
       {/*Compliance*/}
-      
+      <section id="compliance" className="px-4 md:px-8 py-16 border-t border-white/[0.06]">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+            {/* Right - Compliance Overview Card */}
+            <div className="rounded-2xl p-6 border border-white/[0.06]" style={{ background: 'rgba(255,255,255,0.02)' }}>
+              <p className="text-xs font-bold tracking-widest text-slate-500 mb-6">COMPLIANCE OVERVIEW</p>
+              <div className="space-y-5">
+                {[
+                  { name: 'OJK Regulation (POJK)', pct: 94, color: '#00d4aa' },
+                  { name: 'Bank Indonesia Standards', pct: 88, color: '#0ea5e9' },
+                  { name: 'ESG Disclosure Standards', pct: 76, color: '#f59e0b' },
+                  { name: 'SDG 12 & 16 Alignment', pct: 82, color: '#22c55e' },
+                ].map(item => (
+                  <div key={item.name}>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs"
+                          style={{ background: `${item.color}20` }}>
+                          {item.name.includes('OJK') ? '⚖️' : item.name.includes('Bank') ? '🏦' : item.name.includes('ESG') ? '🌿' : '🌍'}
+                        </div>
+                        <span className="text-sm text-slate-300">{item.name}</span>
+                      </div>
+                      <span className="text-sm font-bold" style={{ color: item.color }}>{item.pct}%</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-white/5 overflow-hidden">
+                      <div className="h-full rounded-full transition-all duration-700"
+                        style={{ width: `${item.pct}%`, background: item.color, boxShadow: `0 0 6px ${item.color}60` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* CTA */}
       <section className="px-4 md:px-8 py-16 text-center border-t border-white/[0.06]">
