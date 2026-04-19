@@ -12,6 +12,8 @@ import ESGReportPage from './pages/ESGReportPage'
 import OJKStatusPage from './pages/OJKStatusPage'
 import NotificationsPage from './pages/NotificationsPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminUsers from './pages/admin/AdminUsers'
+import AdminReports from './pages/admin/AdminReports'
 
 export default function App() {
   return (
@@ -45,6 +47,12 @@ export default function App() {
       {/* Protected - Admin */}
       <Route path="/admin/dashboard" element={
         <ProtectedRoute adminOnly={true}><AdminDashboard /></ProtectedRoute>
+      } />
+      <Route path="/admin/users" element={
+        <ProtectedRoute adminOnly={true}><AdminUsers /></ProtectedRoute>
+      } />
+      <Route path="/admin/reports" element={
+        <ProtectedRoute adminOnly={true}><AdminReports /></ProtectedRoute>
       } />
 
       {/* Fallback */}
