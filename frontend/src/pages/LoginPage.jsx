@@ -15,8 +15,12 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
     try {
-      await login(email, password)
-      navigate('/dashboard')
+      const data = await login(email, password)
+      if (data.user.role === 'admin') {
+        navigate('/admin/dashboard')
+      } else {
+        navigate('/dashboard')
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Login gagal')
     } finally {

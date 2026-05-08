@@ -141,4 +141,14 @@ class ReportController extends Controller
 
         return response()->json($reports);
     }
+
+    public function history(Request $request)
+    {
+        $reports = Report::where('user_id', $request->user()->id)
+            ->with(['esgScore', 'regulations'])
+            ->latest()
+            ->get();
+
+        return response()->json($reports);
+    }
 }

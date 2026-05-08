@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { icon: '⚖️', label: 'OJK Status', path: '/ojk-status' },
   { icon: '🔔', label: 'Notifications', path: '/notifications' },
   { icon: '📄', label: 'SDG Reports', path: '/result' },
+  { icon: '🕒', label: 'History', path: '/history' },
 ]
 
 export default function ResultPage() {

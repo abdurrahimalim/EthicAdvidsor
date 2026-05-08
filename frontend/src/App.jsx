@@ -11,6 +11,7 @@ import ResultPage from './pages/ResultPage'
 import ESGReportPage from './pages/ESGReportPage'
 import OJKStatusPage from './pages/OJKStatusPage'
 import NotificationsPage from './pages/NotificationsPage'
+import HistoryPage from './pages/HistoryPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminUsers from './pages/admin/AdminUsers'
 import AdminReports from './pages/admin/AdminReports'
@@ -42,6 +43,9 @@ export default function App() {
       } />
       <Route path="/notifications" element={
         <ProtectedRoute><NotificationsPage /></ProtectedRoute>
+      } />
+      <Route path="/history" element={
+        <ProtectedRoute><HistoryPage /></ProtectedRoute>
       } />
 
       {/* Protected - Admin */}
