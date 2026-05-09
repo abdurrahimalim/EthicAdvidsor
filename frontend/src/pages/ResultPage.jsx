@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../api/axios'
+import {
+  RadarChart, Radar, PolarGrid, PolarAngleAxis,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
+  PieChart, Pie, Cell, ResponsiveContainer, Legend
+} from 'recharts'
 
 const NAV_ITEMS = [
   { icon: '📊', label: 'Dashboard', path: '/dashboard' },
@@ -151,8 +156,149 @@ export default function ResultPage() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl p-4 md:p-5 border border-white/[0.06]" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                  <h3 className="font-semibold text-sm mb-4">🌍 SDG 12 & 16 Alignment</h3>
+              {/* ===== SECTION DIAGRAM ===== */}
+              {esg && (
+                <div className="space-y-4">
+                  <h2 className="font-extrabold text-base md:text-lg">📊 Visualisasi Data</h2>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+                    {/* 1. Radar Chart - ESG Components */}
+                    <div className="rounded-2xl p-4 md:p-5 border border-white/[0.06]"
+                      style={{ background: 'rgba(255,255,255,0.02)' }}>
+                      <h3 className="font-semibold text-sm mb-4">🕸️ ESG Radar Chart</h3>
+                      <ResponsiveContainer width="100%" height={250}>
+                        <RadarChart data={[
+                          { subject: 'Environmental', value: esg.environmental_score, fullMark: 100 },
+                          { subject: 'Social', value: esg.social_score, fullMark: 100 },
+                          { subject: 'Governance', value: esg.governance_score, fullMark: 100 },
+                          { subject: 'OJK Score', value: esg.ojk_score, fullMark: 100 },
+                        ]}>
+                          <PolarGrid stroke="rgba(255,255,255,0.1)" />
+                          <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 11 }} />
+                          <Radar name="Score" dataKey="value" stroke="#00d4aa" fill="#00d4aa" fillOpacity={0.2} />
+                          <Tooltip
+                            contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                            labelStyle={{ color: '#e8edf2' }}
+                          />
+                          <Tooltip
+                            cursor={false}
+                            contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                          />
+                        </RadarChart>
+                      </ResponsiveContainer>
+                    </div>
+
+                    {/* 2. Donut Chart - Compliance Distribution */}
+                    <div className="rounded-2xl p-4 md:p-5 border border-white/[0.06]"
+                      style={{ background: 'rgba(255,255,255,0.02)' }}>
+                      <h3 className="font-semibold text-sm mb-4">🍩 Compliance Distribution</h3>
+                      <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { name: 'Compliant', value: regs.filter(r => r.status === 'compliant').length },
+                              { name: 'Warning', value: regs.filter(r => r.status === 'warning').length },
+                              { name: 'Non-Compliant', value: regs.filter(r => r.status === 'non-compliant').length },
+                            ].filter(d => d.value > 0)}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius="45%"
+                            outerRadius="65%"
+                            paddingAngle={4}
+                            dataKey="value"
+                          >
+                            <Cell fill="#00d4aa" />
+                            <Cell fill="#f59e0b" />
+                            <Cell fill="#ef4444" />
+                          </Pie>
+                          <Tooltip
+                            cursor={false}
+                            contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                            labelStyle={{ color: '#e8edf2' }}
+                            formatter={(value, name) => [`${value} regulasi`, name]}
+                          />
+                          <Legend
+                            wrapperStyle={{ color: '#94a3b8', fontSize: 11 }}
+                            formatter={(value, entry) => (
+                              <span style={{ color: entry.color }}>{value}</span>
+                            )}
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+
+                      {/* Center stats */}
+                      <div className="flex justify-center gap-6 mt-2">
+                        {[
+                          { label: 'Compliant', count: regs.filter(r => r.status === 'compliant').length, color: '#00d4aa' },
+                          { label: 'Warning', count: regs.filter(r => r.status === 'warning').length, color: '#f59e0b' },
+                          { label: 'Non-Compliant', count: regs.filter(r => r.status === 'non-compliant').length, color: '#ef4444' },
+                        ].map(item => (
+                          <div key={item.label} className="text-center">
+                            <div className="font-bold text-lg" style={{ color: item.color }}>{item.count}</div>
+                            <div className="text-xs text-slate-500">{item.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* 3. Bar Chart - ESG vs Threshold */}
+                    <div className="rounded-2xl p-4 md:p-5 border border-white/[0.06]"
+                      style={{ background: 'rgba(255,255,255,0.02)' }}>
+                      <h3 className="font-semibold text-sm mb-4">📊 ESG Score vs Threshold</h3>
+                      <ResponsiveContainer width="100%" height={250}>
+                        <BarChart data={[
+                          { name: 'Environmental', score: esg.environmental_score, threshold: 50 },
+                          { name: 'Social', score: esg.social_score, threshold: 60 },
+                          { name: 'Governance', score: esg.governance_score, threshold: 65 },
+                          { name: 'Overall', score: esg.overall_score, threshold: 70 },
+                        ]} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                          <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 10 }} />
+                          <YAxis tick={{ fill: '#94a3b8', fontSize: 10 }} domain={[0, 100]} />
+                          <Tooltip
+                            cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                            contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                            labelStyle={{ color: '#e8edf2' }}
+                          />
+                          <Legend wrapperStyle={{ color: '#94a3b8', fontSize: 11 }} />
+                          <Bar dataKey="score" name="Score Aktual" fill="#00d4aa" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="threshold" name="Threshold Min." fill="rgba(245,158,11,0.4)" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+
+                    {/* 4. Bar Chart - Financial Overview */}
+                    <div className="rounded-2xl p-4 md:p-5 border border-white/[0.06]"
+                      style={{ background: 'rgba(255,255,255,0.02)' }}>
+                      <h3 className="font-semibold text-sm mb-4">💰 Financial Performance</h3>
+                      <ResponsiveContainer width="100%" height={250}>
+                        <BarChart data={[
+                          { name: 'Profit Margin', value: esg.profit_margin, target: 15 },
+                          { name: 'ROA', value: esg.return_on_assets, target: 5 },
+                          { name: 'OJK Score', value: esg.ojk_score, target: 80 },
+                        ]} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                          <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 10 }} />
+                          <YAxis tick={{ fill: '#94a3b8', fontSize: 10 }} />
+                          <Tooltip
+                            cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                            contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                            labelStyle={{ color: '#e8edf2' }}
+                          />
+                          <Legend wrapperStyle={{ color: '#94a3b8', fontSize: 11 }} />
+                          <Bar dataKey="value" name="Nilai Aktual" fill="#0ea5e9" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="target" name="Target" fill="rgba(167,139,250,0.4)" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+
+                  </div>
+                </div>
+              )}
+
+              <div className="rounded-2xl p-4 md:p-5 border border-white/[0.06]" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                <h3 className="font-semibold text-sm mb-4">🌍 SDG 12 & 16 Alignment</h3>
                   <div className="space-y-4">
                     {[
                       { label: 'SDG 12 — Konsumsi & Produksi Berkelanjutan', pct: Math.min(100, (esg?.environmental_score ?? 0) + 10), color: '#22c55e' },

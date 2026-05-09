@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../api/axios'
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid,
+  Tooltip, Legend, ResponsiveContainer, ReferenceLine
+} from 'recharts'
 
 const NAV_ITEMS = [
   { icon: '📊', label: 'Dashboard', path: '/dashboard' },
@@ -113,44 +117,59 @@ export default function ESGReportPage() {
                 </div>
                 <div className="p-4 md:p-5">
                   {activeTab === 'environmental' && (
-                    <div className="space-y-4">
-                      <h3 className="font-semibold text-sm">Emisi Karbon</h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="p-3 rounded-xl border border-white/[0.06]" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                          <p className="text-xs text-slate-500">Total Emisi</p>
-                          <p className="font-bold text-lg text-green-400">{esg?.carbon_emission} ton</p>
-                          <p className="text-xs text-green-400">{esg?.carbon_emission <= 600 ? '✅ Di bawah threshold 600 ton' : '❌ Melebihi threshold 600 ton'}</p>
-                        </div>
-                        <div className="p-3 rounded-xl border border-white/[0.06]" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                          <p className="text-xs text-slate-500">Environmental Score</p>
-                          <p className="font-bold text-lg text-green-400">{esg?.environmental_score}</p>
-                          <p className="text-xs text-green-400">dari skala 100</p>
-                        </div>
-                      </div>
+                    <div className="mt-4">
+                      <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+                        Posisi vs Threshold
+                      </h4>
+                      <ResponsiveContainer width="100%" height={180}>
+                        <BarChart data={[
+                          { name: 'Emisi Karbon', value: esg?.carbon_emission ?? 0, threshold: 600 },
+                        ]} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                          <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 11 }} />
+                          <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} />
+                          <Tooltip
+                            contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                          />
+                          <Legend wrapperStyle={{ color: '#94a3b8', fontSize: 11 }} />
+                          <ReferenceLine y={600} stroke="#ef4444" strokeDasharray="4 4" label={{ value: 'Max 600', fill: '#ef4444', fontSize: 10 }} />
+                          <Bar dataKey="value" name="Emisi Aktual (ton)" fill="#22c55e" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
                     </div>
                   )}
                   {activeTab === 'social' && (
-                    <div className="space-y-4">
-                      <h3 className="font-semibold text-sm">Social Score</h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="p-3 rounded-xl border border-white/[0.06]" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                          <p className="text-xs text-slate-500">Social Score</p>
-                          <p className="font-bold text-lg text-blue-400">{esg?.social_score}</p>
-                          <p className="text-xs text-blue-400">{esg?.social_score >= 60 ? '✅ Di atas threshold 60' : '⚠️ Di bawah threshold 60'}</p>
-                        </div>
-                      </div>
+                    <div className="mt-4">
+                      <ResponsiveContainer width="100%" height={180}>
+                        <BarChart data={[
+                          { name: 'Social Score', value: esg?.social_score ?? 0, threshold: 60 },
+                        ]} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                          <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 11 }} />
+                          <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} domain={[0, 100]} />
+                          <Tooltip contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }} />
+                          <Legend wrapperStyle={{ color: '#94a3b8', fontSize: 11 }} />
+                          <ReferenceLine y={60} stroke="#f59e0b" strokeDasharray="4 4" label={{ value: 'Min 60', fill: '#f59e0b', fontSize: 10 }} />
+                          <Bar dataKey="value" name="Social Score" fill="#0ea5e9" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
                     </div>
                   )}
                   {activeTab === 'governance' && (
-                    <div className="space-y-4">
-                      <h3 className="font-semibold text-sm">Governance Score</h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="p-3 rounded-xl border border-white/[0.06]" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                          <p className="text-xs text-slate-500">Governance Score</p>
-                          <p className="font-bold text-lg text-purple-400">{esg?.governance_score}</p>
-                          <p className="text-xs text-purple-400">{esg?.governance_score >= 65 ? '✅ Di atas threshold 65' : '⚠️ Di bawah threshold 65'}</p>
-                        </div>
-                      </div>
+                    <div className="mt-4">
+                      <ResponsiveContainer width="100%" height={180}>
+                        <BarChart data={[
+                          { name: 'Governance Score', value: esg?.governance_score ?? 0, threshold: 65 },
+                        ]} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                          <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 11 }} />
+                          <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} domain={[0, 100]} />
+                          <Tooltip contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }} />
+                          <Legend wrapperStyle={{ color: '#94a3b8', fontSize: 11 }} />
+                          <ReferenceLine y={65} stroke="#f59e0b" strokeDasharray="4 4" label={{ value: 'Min 65', fill: '#f59e0b', fontSize: 10 }} />
+                          <Bar dataKey="value" name="Governance Score" fill="#a78bfa" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
                     </div>
                   )}
                 </div>
