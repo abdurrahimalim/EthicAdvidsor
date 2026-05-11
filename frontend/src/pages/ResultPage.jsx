@@ -241,7 +241,7 @@ export default function ResultPage() {
                         ))}
                       </div>
                     </div>
-                    
+
                     {/* 3. Bar Chart - ESG vs Threshold */}
                     <div className="rounded-2xl p-4 md:p-5 border border-white/[0.06]"
                       style={{ background: 'rgba(255,255,255,0.02)' }}>
@@ -292,6 +292,160 @@ export default function ResultPage() {
                         </BarChart>
                       </ResponsiveContainer>
                     </div>
+
+                  </div>
+                </div>
+              )}
+
+              {/* ===== SARAN & REKOMENDASI ===== */}
+              {esg && (
+                <div className="rounded-2xl p-4 md:p-5 border border-white/[0.06]"
+                  style={{ background: 'rgba(255,255,255,0.02)' }}>
+                  <h3 className="font-semibold text-sm mb-5">💡 Saran & Rekomendasi</h3>
+
+                  <div className="space-y-3">
+
+                    {/* Environmental */}
+                    {esg.carbon_emission > 600 ? (
+                      <div className="flex gap-3 p-4 rounded-xl border border-red-500/20"
+                        style={{ background: 'rgba(239,68,68,0.05)' }}>
+                        <span className="text-xl flex-shrink-0">🔴</span>
+                        <div>
+                          <p className="font-semibold text-sm text-red-400 mb-1">Emisi Karbon Melebihi Batas</p>
+                          <p className="text-xs text-slate-400 leading-relaxed">
+                            Emisi karbon perusahaan sebesar <strong className="text-white">{esg.carbon_emission} ton</strong> melebihi threshold maksimum 600 ton.
+                            Rekomendasikan untuk menerapkan program efisiensi energi, beralih ke sumber energi terbarukan,
+                            dan melakukan audit emisi secara berkala untuk mengurangi jejak karbon perusahaan.
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex gap-3 p-4 rounded-xl border border-green-500/20"
+                        style={{ background: 'rgba(34,197,94,0.05)' }}>
+                        <span className="text-xl flex-shrink-0">🟢</span>
+                        <div>
+                          <p className="font-semibold text-sm text-green-400 mb-1">Emisi Karbon Terkendali</p>
+                          <p className="text-xs text-slate-400 leading-relaxed">
+                            Emisi karbon sebesar <strong className="text-white">{esg.carbon_emission} ton</strong> masih di bawah threshold 600 ton.
+                            Pertahankan dan tingkatkan program keberlanjutan lingkungan untuk memperkuat Environmental Score.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Social */}
+                    {esg.social_score < 60 ? (
+                      <div className="flex gap-3 p-4 rounded-xl border border-red-500/20"
+                        style={{ background: 'rgba(239,68,68,0.05)' }}>
+                        <span className="text-xl flex-shrink-0">🔴</span>
+                        <div>
+                          <p className="font-semibold text-sm text-red-400 mb-1">Social Score Di Bawah Standar</p>
+                          <p className="text-xs text-slate-400 leading-relaxed">
+                            Social Score <strong className="text-white">{esg.social_score}</strong> berada di bawah threshold minimum 60 poin.
+                            Rekomendasikan untuk meningkatkan program CSR, pelatihan karyawan, keterlibatan komunitas,
+                            dan program kesejahteraan tenaga kerja guna meningkatkan aspek sosial perusahaan.
+                          </p>
+                        </div>
+                      </div>
+                    ) : esg.social_score < 75 ? (
+                      <div className="flex gap-3 p-4 rounded-xl border border-yellow-500/20"
+                        style={{ background: 'rgba(245,158,11,0.05)' }}>
+                        <span className="text-xl flex-shrink-0">🟡</span>
+                        <div>
+                          <p className="font-semibold text-sm text-yellow-400 mb-1">Social Score Perlu Ditingkatkan</p>
+                          <p className="text-xs text-slate-400 leading-relaxed">
+                            Social Score <strong className="text-white">{esg.social_score}</strong> sudah memenuhi threshold namun masih dapat ditingkatkan.
+                            Perluas program sosial, tingkatkan transparansi pelaporan sosial, dan perkuat hubungan dengan stakeholder.
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex gap-3 p-4 rounded-xl border border-green-500/20"
+                        style={{ background: 'rgba(34,197,94,0.05)' }}>
+                        <span className="text-xl flex-shrink-0">🟢</span>
+                        <div>
+                          <p className="font-semibold text-sm text-green-400 mb-1">Social Score Sangat Baik</p>
+                          <p className="text-xs text-slate-400 leading-relaxed">
+                            Social Score <strong className="text-white">{esg.social_score}</strong> menunjukkan performa sosial yang sangat baik.
+                            Pertahankan program sosial yang ada dan dokumentasikan sebagai best practice perusahaan.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Governance */}
+                    {esg.governance_score < 65 ? (
+                      <div className="flex gap-3 p-4 rounded-xl border border-red-500/20"
+                        style={{ background: 'rgba(239,68,68,0.05)' }}>
+                        <span className="text-xl flex-shrink-0">🔴</span>
+                        <div>
+                          <p className="font-semibold text-sm text-red-400 mb-1">Governance Score Di Bawah Standar</p>
+                          <p className="text-xs text-slate-400 leading-relaxed">
+                            Governance Score <strong className="text-white">{esg.governance_score}</strong> berada di bawah threshold minimum 65 poin.
+                            Rekomendasikan untuk memperkuat struktur tata kelola, meningkatkan transparansi laporan keuangan,
+                            dan memastikan kepatuhan terhadap regulasi OJK secara konsisten.
+                          </p>
+                        </div>
+                      </div>
+                    ) : esg.governance_score < 80 ? (
+                      <div className="flex gap-3 p-4 rounded-xl border border-yellow-500/20"
+                        style={{ background: 'rgba(245,158,11,0.05)' }}>
+                        <span className="text-xl flex-shrink-0">🟡</span>
+                        <div>
+                          <p className="font-semibold text-sm text-yellow-400 mb-1">Governance Cukup, Perlu Peningkatan</p>
+                          <p className="text-xs text-slate-400 leading-relaxed">
+                            Governance Score <strong className="text-white">{esg.governance_score}</strong> memenuhi threshold namun masih ada ruang perbaikan.
+                            Tingkatkan mekanisme pengawasan internal, perkuat kebijakan anti-korupsi, dan tingkatkan kualitas laporan tahunan.
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex gap-3 p-4 rounded-xl border border-green-500/20"
+                        style={{ background: 'rgba(34,197,94,0.05)' }}>
+                        <span className="text-xl flex-shrink-0">🟢</span>
+                        <div>
+                          <p className="font-semibold text-sm text-green-400 mb-1">Governance Score Sangat Baik</p>
+                          <p className="text-xs text-slate-400 leading-relaxed">
+                            Governance Score <strong className="text-white">{esg.governance_score}</strong> mencerminkan tata kelola perusahaan yang sangat baik.
+                            Pertahankan standar governance dan jadikan sebagai keunggulan kompetitif perusahaan.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Overall ESG */}
+                    <div className="flex gap-3 p-4 rounded-xl border border-white/[0.06]"
+                      style={{ background: 'rgba(255,255,255,0.03)' }}>
+                      <span className="text-xl flex-shrink-0">📋</span>
+                      <div>
+                        <p className="font-semibold text-sm text-white mb-1">Ringkasan Rekomendasi</p>
+                        <p className="text-xs text-slate-400 leading-relaxed">
+                          Overall ESG Score perusahaan adalah <strong style={{ color: esg.overall_score >= 80 ? '#00d4aa' : esg.overall_score >= 60 ? '#f59e0b' : '#ef4444' }}>{esg.overall_score}</strong> —
+                          {esg.overall_score >= 80
+                            ? ' Performa ESG sangat baik. Perusahaan telah memenuhi standar keberlanjutan internasional. Fokus pada inovasi dan kepemimpinan ESG di industri.'
+                            : esg.overall_score >= 60
+                            ? ' Performa ESG cukup baik namun masih ada ruang untuk perbaikan. Prioritaskan aspek dengan score terendah dan buat roadmap peningkatan ESG jangka panjang.'
+                            : ' Performa ESG perlu perhatian serius. Segera buat action plan perbaikan ESG dan konsultasikan dengan konsultan keberlanjutan untuk langkah konkret.'
+                          }
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* OJK Compliance */}
+                    {regs.some(r => r.status !== 'compliant') && (
+                      <div className="flex gap-3 p-4 rounded-xl border border-orange-500/20"
+                        style={{ background: 'rgba(245,158,11,0.05)' }}>
+                        <span className="text-xl flex-shrink-0">⚖️</span>
+                        <div>
+                          <p className="font-semibold text-sm text-orange-400 mb-1">Tindakan Kepatuhan OJK Diperlukan</p>
+                          <p className="text-xs text-slate-400 leading-relaxed">
+                            Terdapat {regs.filter(r => r.status !== 'compliant').length} regulasi yang belum terpenuhi:
+                            <strong className="text-white"> {regs.filter(r => r.status !== 'compliant').map(r => r.name).join(', ')}</strong>.
+                            Segera lakukan pemenuhan kewajiban regulasi untuk menghindari sanksi dari OJK dan Bank Indonesia.
+                          </p>
+                        </div>
+                      </div>
+                    )}
 
                   </div>
                 </div>

@@ -129,7 +129,9 @@ export default function ESGReportPage() {
                           <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 11 }} />
                           <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} />
                           <Tooltip
+                            cursor={{ fill: 'rgba(255,255,255,0.05)' }}
                             contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                            labelStyle={{ color: '#e8edf2' }}
                           />
                           <Legend wrapperStyle={{ color: '#94a3b8', fontSize: 11 }} />
                           <ReferenceLine y={600} stroke="#ef4444" strokeDasharray="4 4" label={{ value: 'Max 600', fill: '#ef4444', fontSize: 10 }} />
@@ -147,7 +149,11 @@ export default function ESGReportPage() {
                           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                           <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 11 }} />
                           <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} domain={[0, 100]} />
-                          <Tooltip contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }} />
+                          <Tooltip
+                            cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                            contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                            labelStyle={{ color: '#e8edf2' }}
+                          />
                           <Legend wrapperStyle={{ color: '#94a3b8', fontSize: 11 }} />
                           <ReferenceLine y={60} stroke="#f59e0b" strokeDasharray="4 4" label={{ value: 'Min 60', fill: '#f59e0b', fontSize: 10 }} />
                           <Bar dataKey="value" name="Social Score" fill="#0ea5e9" radius={[4, 4, 0, 0]} />
@@ -164,7 +170,11 @@ export default function ESGReportPage() {
                           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                           <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 11 }} />
                           <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} domain={[0, 100]} />
-                          <Tooltip contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }} />
+                          <Tooltip
+                            cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                            contentStyle={{ background: '#0f1419', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                            labelStyle={{ color: '#e8edf2' }}
+                          />
                           <Legend wrapperStyle={{ color: '#94a3b8', fontSize: 11 }} />
                           <ReferenceLine y={65} stroke="#f59e0b" strokeDasharray="4 4" label={{ value: 'Min 65', fill: '#f59e0b', fontSize: 10 }} />
                           <Bar dataKey="value" name="Governance Score" fill="#a78bfa" radius={[4, 4, 0, 0]} />
