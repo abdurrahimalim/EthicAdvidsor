@@ -463,21 +463,6 @@ export default function UploadPage() {
                     ].map(f => <Checkbox key={f.name} label={f.label} checked={form[f.name]} onChange={() => toggle(f.name)} />)}
                   </EsgSubCard>
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                  <div>
-                    <FieldLabel>Social Score (0–100)</FieldLabel>
-                    <Input type="number" name="social_score" value={form.social_score}
-                      onChange={handleChange} placeholder="Contoh: 75" required min="0" max="100" />
-                    <p className="text-xs text-slate-500 mt-1">Threshold: &gt; 60 poin</p>
-                  </div>
-                  <div>
-                    <FieldLabel>Governance Score (0–100)</FieldLabel>
-                    <Input type="number" name="governance_score" value={form.governance_score}
-                      onChange={handleChange} placeholder="Contoh: 80" required min="0" max="100" />
-                    <p className="text-xs text-slate-500 mt-1">Threshold: &gt; 65 poin</p>
-                  </div>
-                </div>
               </SectionCard>
 
               <button type="submit" disabled={loading}
