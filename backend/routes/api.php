@@ -26,12 +26,28 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/notifications',           [NotificationController::class, 'index']);
     Route::patch('/notifications/{id}/read', [NotificationController::class, 'markRead']);
     Route::patch('/notifications/read-all',  [NotificationController::class, 'markAllRead']);
+    
+    Route::delete('/account', [AuthController::class, 'deleteAccount']);
+    Route::put('/profile', [AuthController::class, 'updateProfile']);
+
+    Route::get('/reports/{id}/detail', [ReportController::class, 'detail']);
 });
+
 
 // Admin routes
 Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
-    Route::get('/users', [AdminController::class, 'getUsers']);
-    Route::delete('/users/{id}', [AdminController::class, 'deleteUser']);
-    Route::get('/reports', [AdminController::class, 'getReports']);
-    Route::delete('/reports/{id}', [AdminController::class, 'deleteReport']);
+    // User CRUD
+    Route::get('/users',          [AdminController::class, 'getUsers']);
+    Route::post('/users',         [AdminController::class, 'createUser']);
+    Route::put('/users/{id}',     [AdminController::class, 'updateUser']);
+    Route::delete('/users/{id}',  [AdminController::class, 'deleteUser']);
+
+    // Report CRUD
+    Route::get('/reports',        [AdminController::class, 'getReports']);
+    Route::post('/reports',       [AdminController::class, 'createReport']);
+    Route::put('/reports/{id}',   [AdminController::class, 'updateReport']);
+    Route::delete('/reports/{id}',[AdminController::class, 'deleteReport']);
 });
+
+// History route (alias untuk /reports/history)
+Route::middleware('auth:sanctum')->get('/history', [ReportController::class, 'history']);
