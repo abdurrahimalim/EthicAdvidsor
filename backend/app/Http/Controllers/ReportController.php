@@ -34,7 +34,7 @@ class ReportController extends Controller
             'revenue'          => $request->revenue,
             'net_profit'       => $request->net_profit,
             'total_assets'     => $request->total_assets,
-            'status'           => 'processed',
+            'status'           => 'Pending',
         ]);
 
         // Hitung ESG Score
@@ -108,7 +108,7 @@ class ReportController extends Controller
             'user_id'   => $request->user()->id,
             'report_id' => $report->id,
             'message'   => 'Laporan ' . $request->company_name . ' tahun ' . $request->year . ' berhasil diproses.',
-            'type'      => 'ok',
+            'type'      => 'Ok',
             'is_read'   => false,
         ]);
 
@@ -141,4 +141,56 @@ class ReportController extends Controller
 
         return response()->json($reports);
     }
+public function update(Request $request, $id)
+{
+    $report = Report::findOrFail($id);
+
+    $report->update([
+        'company_name' => $request->company_name,
+        'year'         => $request->year,
+        'status'       => $request->status,
+        'notes'        => $request->notes,
+    ]);
+
+    if ($request->filled('notes')) {
+        Notification::create([
+            'user_id'   => $report->user_id,
+            'report_id' => $report->id,
+            'message'   => 'Catatan admin untuk laporan ' . $report->company_name . ': ' . $request->notes,
+            'type'      => 'ok',
+            'is_read'   => false,
+        ]);
+    }
+
+    return response()->json($report);
+}
+public function history(Request $request)
+{
+    $reports = Report::where('user_id', $request->user()->id)
+        ->with(['esgScore'])
+        ->latest()
+        ->get()
+->map(function ($report) {
+    $esgScore = $report->esgScore?->overall_score ?? 0;
+
+    if ($esgScore < 60) {
+        $type = 'warning';
+    } elseif ($esgScore >= 60 && $report->status === 'processed') {
+        $type = 'analysis';
+    } else {
+        $type = 'upload';
+    }
+
+    return [
+        'id'          => $report->id,
+        'title'       => $report->company_name,
+        'description' => 'Laporan ESG tahun ' . $report->year,
+        'type'        => $type,
+        'status'      => $report->status === 'processed' ? 'success' : $report->status,
+        'created_at'  => $report->created_at,
+    ];
+});
+
+    return response()->json(['data' => $reports]);
+}
 }
